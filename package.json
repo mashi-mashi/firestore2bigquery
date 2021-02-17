@@ -9,7 +9,7 @@
     "fixpack": "fixpack",
     "lint": "eslint --ext .ts ./src --cache",
     "lintfix": "eslint --ext .ts ./src --cache --fix",
-    "deploy": "firebase deploy --only functions",
+    "deploy": "firebase deploy --only functions:firestoreTobigquery.export,functions:firestoreTobigquery.import",
     "test": "npx jest"
   },
   "files": [
@@ -24,7 +24,8 @@
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "firebase-admin": "^9.4.2",
-    "firebase-functions": "^3.13.1"
+    "firebase-functions": "^3.13.1",
+    "googleapis": "^43.0.0"
   },
   "engines": {
     "node": "12"
