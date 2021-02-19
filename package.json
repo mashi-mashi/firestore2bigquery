@@ -9,7 +9,7 @@
     "fixpack": "fixpack",
     "lint": "eslint --ext .ts ./src --cache",
     "lintfix": "eslint --ext .ts ./src --cache --fix",
-    "deploy": "firebase deploy --only functions:firestoreTobigquery.export,functions:firestoreTobigquery.import",
+    "deploy": "firebase deploy --only functions:firestoreTobigquery",
     "test": "npx jest"
   },
   "files": [

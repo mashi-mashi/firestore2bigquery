@@ -6,33 +6,30 @@ import Firestore = firestore_v1beta2.Firestore;
 const logger = Logger.create('export ');
 
 export class FirestoreExpoter {
-  static execute = async (message: {json: any}) => {
+  static execute = async (message: {json?: {collectionIds: string[]}}) => {
     const exportCollections = message.json?.collectionIds;
 
-    if (!exportCollections || exportCollections.length === 0) {
+    if (!exportCollections || !exportCollections.length) {
       return;
     }
 
-    const {projectId, bucketName} = gcpConfig;
+    const {bucketName} = gcpConfig;
 
-    if (!projectId || !bucketName) {
+    if (!bucketName) {
       logger.error('require params.');
       return;
     }
 
     try {
-      logger.log(
-        `start export firestore colletions. projectId=${exportCollections} collectionIds=${exportCollections}`
-      );
+      logger.log(`start export firestore colletions. collectionIds=${exportCollections}`);
+
       const auth = await google.auth.getClient({
-        projectId,
         scopes: ['https://www.googleapis.com/auth/datastore', 'https://www.googleapis.com/auth/cloud-platform'],
       });
 
       const firestore = new Firestore({});
       const result = await firestore.projects.databases.exportDocuments({
         auth,
-        name: `projects/${projectId}/databases/(default)`,
         requestBody: {
           collectionIds: exportCollections,
           outputUriPrefix: `gs://${bucketName}`,

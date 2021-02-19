@@ -1,9 +1,6 @@
 import {BigQuery} from '@google-cloud/bigquery';
 import {bigquery_v2} from 'googleapis';
-import {gcpConfig} from '../env';
 import Schema$JobConfigurationLoad = bigquery_v2.Schema$JobConfigurationLoad;
-
-const projectId = gcpConfig.projectId;
 
 export class BigQueryImporter {
   public static execute = async (object: {bucket?: string; name?: string}) => {
@@ -26,7 +23,6 @@ export class BigQueryImporter {
     const configuration: Schema$JobConfigurationLoad = {
       destinationTable: {
         datasetId: `firestore`,
-        projectId: `${projectId}`,
         tableId: `${collectionName}`,
       },
       sourceFormat: 'DATASTORE_BACKUP',
@@ -37,7 +33,6 @@ export class BigQueryImporter {
     await bigquery.createJob({
       configuration: {load: configuration},
     });
-
     return Promise.resolve('success');
   };
 }
